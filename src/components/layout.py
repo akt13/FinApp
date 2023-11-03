@@ -1,5 +1,5 @@
-from dash import Dash, html, dcc, Input, Output, callback
-from . import expense
+from dash import Dash, html, dcc
+from . import expense, stockTable
 
 
 def create_layout(app: Dash) -> html.Div:
@@ -13,7 +13,7 @@ def create_layout(app: Dash) -> html.Div:
                     "Page with details of NPS, PPF, MF, Stocks, SGB etc details ")
             ]),
             dcc.Tab(label='Stocks', children=[
-                html.H6("Page with detailed stocks infos")
+                stockTable.render(app)
             ]),
             dcc.Tab(label='Expense Tracker', children=[
                 expense.render(app)
