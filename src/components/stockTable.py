@@ -61,7 +61,7 @@ def render(app: Dash) -> html.Div:
         State('our-table', 'data_previous')
     )
 
-    #test section
+    #Add new row to datatable
     @app.callback(
         Output('our-table', 'data'),
         [Input('adding-rows-btn', 'n_clicks')],
