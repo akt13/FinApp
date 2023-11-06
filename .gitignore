@@ -2,3 +2,4 @@
 /src/__init__.*
 /src/__pycache__
 test.py
+*.pyc
