@@ -12,8 +12,8 @@ def create_layout(app: Dash) -> html.Div:
                 html.H6(
                     "Page with details of NPS, PPF, MF, Stocks, SGB etc details ")
             ]),
-            dcc.Tab(label='Stocks', children=[
-                stockTable.render(app)
+            dcc.Tab(label='Stocks', children=[                
+                    stockTable.render(app)
             ]),
             dcc.Tab(label='Expense Tracker', children=[
                 expense.render(app)
