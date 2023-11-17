@@ -8,6 +8,7 @@ collection =  createMongo.mongoCreate()
 def render(app: Dash) -> html.Div:
 
     @app.callback(Output('mongo-datatable', component_property='children'),
+                  Output('sum_PnL', component_property='children'),
                 Input('interval_db', component_property='n_intervals')
                 )
     def populate_datatable(n_intervals):
@@ -22,7 +23,9 @@ def render(app: Dash) -> html.Div:
         df['Current_Value'] = df['Quantity'] * df['LTP']
         df['P&L'] = df['Current_Value'] * df['Hold_Value']
         df['P&L %'] = df['P&L'] / df['Hold_Value']
-        print(df.head(20))
+        # print(df.head(20))
+
+        total_PnL = df['P&L'].sum()
 
         return [
             dash_table.DataTable(
@@ -32,6 +35,7 @@ def render(app: Dash) -> html.Div:
                         else {'id': p, 'name': p, 'editable': True}
                         for p in df],
             ),
+            total_PnL,
         ]
     
     
@@ -93,7 +97,7 @@ def render(app: Dash) -> html.Div:
     return html.Div(
         children = [
             html.Div([
-                    html.H1('Web Application connected to a Live Database', style={'textAlign': 'center'}),
+                    html.H1('Stocks in Portfolio', style={'textAlign': 'center'}),
                     # interval activated once/week or when page refreshed
                     dcc.Interval(id='interval_db', interval=86400000 * 7, n_intervals=0),
                     html.Div(id='mongo-datatable', children=[]),
@@ -101,6 +105,7 @@ def render(app: Dash) -> html.Div:
                     html.Button("Save", id="save-it"),
                     dcc.Store(id='changed-cell'),
                     html.Div(id="placeholder"),
+                    html.Div(id="sum_PnL"),
                 ]
             )
         ]
