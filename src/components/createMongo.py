@@ -20,21 +20,15 @@ def mongoCreate():
         new_collection = new_database[new_collection_name]
     # Insert a document into the 'users' collection
         user_data = {
-            "_id": "1",
-            "employee": "",
-            "department" :""
+            "_id" : "1",
+            "Stock": "",
+            "Symbol": "",
+            "Quantity": "",
+            "Avg_Price" :"",
+            "LTP" : ""
         }
         new_collection.insert_one(user_data)
     else:
         new_collection = new_database[new_collection_name]
-    
-    # Find the maximum existing 'ID' value
-    # max_id = new_collection.find_one(sort=[("_id", pymongo.DESCENDING)])
-
-    # If the collection is empty, start with ID = 1, otherwise increment the maximum ID
-    # next_id = 1 if not max_id else max_id["_id"] + 1
-
-    # Add a field 'ID' to the documents in the collection
-    # new_collection.update_many({}, {"$set": {"_id": next_id}})
 
     return new_collection

@@ -1,9 +1,7 @@
 from dash import Dash, html, dcc, Input, Output, dash_table, State
 import pandas as pd 
+import pymongo
 from . import createMongo
-
-# db = createMongo.mongoCreate()
-# collection = db["production"]
 
 collection =  createMongo.mongoCreate()
 
