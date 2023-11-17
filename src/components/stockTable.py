@@ -15,6 +15,13 @@ def render(app: Dash) -> html.Div:
         df = pd.DataFrame(list(collection.find()))
         # Convert id from ObjectId to string so it can be read by DataTable
         df['_id'] = df['_id'].astype(str)
+        df['Quantity'] = df['Quantity'].astype(int)
+        df['Avg_Price'] = df['Avg_Price'].astype(int)
+        df['LTP'] = df['LTP'].astype(int)
+        df['Hold_Value'] = df['Quantity'] * df['Avg_Price']
+        df['Current_Value'] = df['Quantity'] * df['LTP']
+        df['P&L'] = df['Current_Value'] * df['Hold_Value']
+        df['P&L %'] = df['P&L'] / df['Hold_Value']
         print(df.head(20))
 
         return [
