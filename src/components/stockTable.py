@@ -1,12 +1,11 @@
 from dash import Dash, html, dcc, Input, Output, dash_table, State
 import pandas as pd 
-import pymongo
+from . import createMongo
 
-client = pymongo.MongoClient(
-    "mongodb+srv://abhijithkthoppil:abhijith123@cluster0.bsv5voc.mongodb.net/?retryWrites=true&w=majority")
-db = client["xindustry"]
-collection = db["production"]
+# db = createMongo.mongoCreate()
+# collection = db["production"]
 
+collection =  createMongo.mongoCreate()
 
 def render(app: Dash) -> html.Div:
 
