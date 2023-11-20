@@ -8,34 +8,41 @@ collection =  createMongo.mongoCreate()
 def render(app: Dash) -> html.Div:
 
     @app.callback(Output('mongo-datatable', component_property='children'),
-                  Output('sum_PnL', component_property='children'),
+                #   Output('sum_PnL', component_property='children'),
                 Input('interval_db', component_property='n_intervals')
                 )
     def populate_datatable(n_intervals):
         # Convert the Collection (table) date to a pandas DataFrame
         df = pd.DataFrame(list(collection.find()))
+        #Drop the _id column generated automatically by Mongo
+        df = df.iloc[:, 1:]
         # Convert id from ObjectId to string so it can be read by DataTable
-        df['_id'] = df['_id'].astype(str)
-        df['Quantity'] = df['Quantity'].astype(int)
-        df['Avg_Price'] = df['Avg_Price'].astype(int)
-        df['LTP'] = df['LTP'].astype(int)
-        df['Hold_Value'] = df['Quantity'] * df['Avg_Price']
-        df['Current_Value'] = df['Quantity'] * df['LTP']
-        df['P&L'] = df['Current_Value'] * df['Hold_Value']
-        df['P&L %'] = df['P&L'] / df['Hold_Value']
+        # df['Quantity'] = df['Quantity'].astype(int)
+        # df['Avg_Price'] = df['Avg_Price'].astype(int)
+        # df['LTP'] = df['LTP'].astype(int)
+        # df['Hold_Value'] = df['Quantity'] * df['Avg_Price']
+        # df['Current_Value'] = df['Quantity'] * df['LTP']
+        # df['P&L'] = df['Current_Value'] * df['Hold_Value']
+        # df['P&L %'] = df['P&L'] / df['Hold_Value']
         # print(df.head(20))
 
-        total_PnL = df['P&L'].sum()
+        # total_PnL = df['P&L'].sum()
 
         return [
             dash_table.DataTable(
                 id='our-table',
+                columns=[{
+                    'name': x,
+                    'id': x,
+                } for x in df.columns],
                 data=df.to_dict('records'),
-                columns=[{'id': p, 'name': p, 'editable': True} if p == '_id'
-                        else {'id': p, 'name': p, 'editable': True}
-                        for p in df],
+                editable=True,
+                sort_action="native",  # give user capability to sort columns
+                sort_mode="single",  # sort across 'multi' or 'single' columns
+                page_current=0,  # page number that user is on
+                page_size=10,  # number of rows visible per page
             ),
-            total_PnL,
+            # total_PnL,
         ]
     
     
